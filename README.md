@@ -17,7 +17,7 @@ This is a summary of Neural Architecture Search (NAS) on Transformer, named TAS.
   <tr>
     <td rowspan="26">Natural Language<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Processing</td>
     <td rowspan="16">Improving Performace</td>
-    <td> <a href="//www.baidu.com/" target="_blank" title="Auto-Sizing  Transformer"> </a> </td>
+    <td> <a href="//www.baidu.com/" > "Auto-Sizing  Transformer"> </a> </td>
     <td>H-level:&nbsp;&nbsp;&nbsp;Auto reducing the size of model in training</td>
     <td>Gradient optimization&nbsp;&nbsp;&nbsp;&amp; Train a supermodel </td>
     <td>arxiv 2019-10</td>
