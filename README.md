@@ -2,46 +2,353 @@
 
 This is a summary of Neural Architecture Search (NAS) on Transformer, named TAS.
 ## Summary of TAS
-| Category 	| Task 	| Method 	| Search Space      (3-level: Hyperparameter-level, Module-level, Architecture-level) 	| Search Strategy   & Performance Estimation 	| Publication 	|
-|:---:	|:---:	|:---:	|:---:	|:---:	|:---:	|
-| Natural Language      Processing 	| Improving Performace 	| Auto-Sizing  Transformer 	| H-level:   Auto reducing the size of model in training 	| Gradient optimization   & Train a supermodel  	| arxiv 2019-10 	|
-|  	|  	| SandWich Transformer 	| A-level: The permutation (order) of FFN and Self-Attention 	| Random search & Sample solutions, train and   evaluate them 	| arxiv 2020-4 	|
-|  	|  	| Multi-Pass Transformer 	| A-level: information flow in   Encoders      (1. multi-pass encoder 2. information flow between these encoders) 	| Random search & Sample solutions, train and   evaluate them 	| arxiv 2020-9 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	|  	| Evolved Transformer 	| M-level: cell search space 	| EA &   Sample solutions, train them with early stopping   for their evaluation 	| arxiv 2017 	|
-|  	|  	| AutoTrans 	| M-level: 1.cell search space   2.activation 3.Norm      4.heads number 5.relative dimension 	| RL   & Sample solutions in a   supermodel       (one-shot method) 	| arxiv 2020-9 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	|  	| CAS(Language Models with Transformers) 	| M-level: Modification:   1.AddLinear      2.AddLSTM 3.FixSubset  	|  Coordinate architecture search & Sample solution, fine-tune   and evaluate them 	| arxiv 2019-10 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	|  	| NAS-BERT 	| M-level: 1.Embedding Size 2.heads   number       3.Hidden Size 4. SepConv 3 5 7       5. Identity 	| Direct   sample (selection) &   Sample solutions in a supermodel       (one-shot method) and performance approximation 	| arixv 2021-5 	|
-|  	|  	| AdaBert 	| 　 	| 　 	| arxiv 2021-1 	|
-|  	|  	| AutoBERT-Zero 	| 　 	| 　 	| arxiv 2021-7 	|
-|  	|  	| Length-Adaptive Transformer 	| 　 	| 　 	| arxiv 2021-6 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	| Hardware-aware       Deployment 	|  Fast Transformers 	| M-level:1.Dimension of Q K V 2.   heads number      3. LN mean value 4. Width of depth of FFN  	| Sampling   distribution optimization &   Sample solutions in a supermodel       (one-shot method) 	| arxiv 2020-8 	|
-|  	|  	| HAT 	| M-level: 1. Layer num in   encoder/decoder      2. Dimension of embedding, hidden layer in FFN and  heads number      3.Arbitrary encoder-decoder attention (Link)  	| EA   & Sample solutions in a supermodel (one-shot method)      and surrogate hareware predictor 	| arxiv 2020-5 	|
-|  	|  	| RankNAS 	| M-level: 1. Layer num in   encoder/decoder      2. Dimension of embedding, hidden layer in FFN and  heads number      3.Arbitrary encoder-decoder attention (Link)       ---------------------Extra to HAT ---------------      4. Norm type(Pre-LN, Post-LN)      5.RPR Len [8,12,16] ( the maximum relative position Representations) 	| Random   search/EA & Sample   solutions in a supermodel (one-shot method)       and rank and select them by the  ranking model 	| arxiv 2021-9 	|
-|  	|  	| DARTsFormer 	| M-level: •  Standard Conv w × 1: for w in 3, 5, 7,   11.      • Dynamic Conv w × 1: for w in 3, 7, 11, 15.      • Self Attention; • FFN.      • Cross Attention: Only available to decoder.      • Gated Linear Unit (GLU).      • Zero: Return a zero tensor of the input size.      • Identity: Return the input. 	| Gradient   optimization (Multi-split reversible network for reducing memory)      & Train a   supermodel  	| arxiv 2021-5 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-|  	| Quantization 	| Mixed Precision   Quantization Transformer 	| H-level:   1-bit, 2-bit, 4-bit and 8-bit 	| Gradient optimization   & Train a supermodel  	|  ICASSP 2021 	|
-|  	| Other 	| TextNAS 	| Not Transformer: 1. Convolutional Layers      2.Recurrent Layers 3.Pooling Layers      4.Multi-Head Self-Attention Layers 	| RL   same as ENAS & Sample   solutions in a supermodel       (one-shot method) 	| AAAI 2020 	|
-|  	|  	| 　 	| 　 	| 　 	| 　 	|
-| Computer       Vision 	| 　 	| AutoFormer 	| 　 	| 　 	| arxiv 2021-7 (ICCV) 	|
-|  	| 　 	| GLiT 	| 　 	| 　 	| arxiv 2021-8 	|
-|  	| Multi-stage 	| Vit-ResNAS 	| 　 	| 　 	| arxiv 2021-9 	|
-|  	| 　 	| PSViT 	| 　 	| 　 	| arxiv 2021-8 	|
-|  	| 　 	| 　 	| 　 	| 　 	| 　 	|
-|  	| 　 	| 　 	| 　 	| 　 	| 　 	|
-|  	| 　 	| 　 	| 　 	| 　 	| 　 	|
-|  	| Vanilla NAS for CNN 	| NAT (not search for   Transformer) 	| 　 	| 　 	| PAMI 2021  	|
-|  	| 　 	| 　 	| 　 	| 　 	| 　 	|
-| Speech 	| Speech   Recognition 	| Evolved   Speech-Transformer 	| M-level:   cell space (same as Evolved Transformer)  	| EA   & Sample solutions   and  progressive dynamic hurdles (early   stopping) 	| INTERSPEECH 2020 	|
-|  	|  	| Streaming Transformer 	| 　 	| 　 	| arxiv 2020-11 	|
-|  	| 　 	| 　 	| 　 	| 　 	| 　 	|
-| Other 	| 　 	| 　 	| 　 	| 　 	| 　 	|
-|  	| 　 	| 　 	| 　 	| 　 	| 　 	|
-|  	| 　 	| 　 	| 　 	| 　 	| 　 	|
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-c3ow{border-color:inherit;text-align:center;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+  <tr>
+    <th class="tg-c3ow">Category</th>
+    <th class="tg-c3ow">Task</th>
+    <th class="tg-c3ow">Method</th>
+    <th class="tg-c3ow">Search Space<br>     (3-level: Hyperparameter-level, Module-level, Architecture-level)</th>
+    <th class="tg-c3ow">Search Strategy   &amp; Performance Estimation</th>
+    <th class="tg-c3ow">Publication</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td class="tg-c3ow">Natural Language<br>     Processing</td>
+    <td class="tg-c3ow">Improving Performace</td>
+    <td class="tg-c3ow">Auto-Sizing  Transformer</td>
+    <td class="tg-c3ow">H-level:   Auto reducing the size of model in training</td>
+    <td class="tg-c3ow">Gradient optimization   &amp; Train a supermodel </td>
+    <td class="tg-c3ow">arxiv 2019-10</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">SandWich Transformer</td>
+    <td class="tg-c3ow">A-level: The permutation (order) of FFN and Self-Attention</td>
+    <td class="tg-c3ow">Random search &amp; Sample solutions, train and   evaluate them</td>
+    <td class="tg-c3ow">arxiv 2020-4</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Multi-Pass Transformer</td>
+    <td class="tg-c3ow">A-level: information flow in   Encoders<br>     (1. multi-pass encoder 2. information flow between these encoders)</td>
+    <td class="tg-c3ow">Random search &amp; Sample solutions, train and   evaluate them</td>
+    <td class="tg-c3ow">arxiv 2020-9</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Evolved Transformer</td>
+    <td class="tg-c3ow">M-level: cell search space</td>
+    <td class="tg-c3ow">EA &amp;   Sample solutions, train them with early stopping   for their evaluation</td>
+    <td class="tg-c3ow">arxiv 2017</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">AutoTrans</td>
+    <td class="tg-c3ow">M-level: 1.cell search space   2.activation 3.Norm<br>     4.heads number 5.relative dimension</td>
+    <td class="tg-c3ow">RL   &amp; Sample solutions in a   supermodel <br>     (one-shot method)</td>
+    <td class="tg-c3ow">arxiv 2020-9</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">CAS(Language Models with Transformers)</td>
+    <td class="tg-c3ow">M-level: Modification:   1.AddLinear<br>     2.AddLSTM 3.FixSubset </td>
+    <td class="tg-c3ow"> Coordinate architecture search &amp; Sample solution, fine-tune   and evaluate them</td>
+    <td class="tg-c3ow">arxiv 2019-10</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">NAS-BERT</td>
+    <td class="tg-c3ow">M-level: 1.Embedding Size 2.heads   number <br>     3.Hidden Size 4. SepConv 3 5 7 <br>     5. Identity</td>
+    <td class="tg-c3ow">Direct   sample (selection) &amp;   Sample solutions in a supermodel <br>     (one-shot method) and performance approximation</td>
+    <td class="tg-c3ow">arixv 2021-5</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">AdaBert</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2021-1</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">AutoBERT-Zero</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2021-7</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Length-Adaptive Transformer</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2021-6</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Hardware-aware <br>     Deployment</td>
+    <td class="tg-c3ow"> Fast Transformers</td>
+    <td class="tg-c3ow">M-level:1.Dimension of Q K V 2.   heads number<br>     3. LN mean value 4. Width of depth of FFN </td>
+    <td class="tg-c3ow">Sampling   distribution optimization &amp;   Sample solutions in a supermodel <br>     (one-shot method)</td>
+    <td class="tg-c3ow">arxiv 2020-8</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">HAT</td>
+    <td class="tg-c3ow">M-level: 1. Layer num in   encoder/decoder<br>     2. Dimension of embedding, hidden layer in FFN and  heads number<br>     3.Arbitrary encoder-decoder attention (Link) </td>
+    <td class="tg-c3ow">EA   &amp; Sample solutions in a supermodel (one-shot method)<br>     and surrogate hareware predictor</td>
+    <td class="tg-c3ow">arxiv 2020-5</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">RankNAS</td>
+    <td class="tg-c3ow">M-level: 1. Layer num in   encoder/decoder<br>     2. Dimension of embedding, hidden layer in FFN and  heads number<br>     3.Arbitrary encoder-decoder attention (Link) <br>     ---------------------Extra to HAT ---------------<br>     4. Norm type(Pre-LN, Post-LN)<br>     5.RPR Len [8,12,16] ( the maximum relative position Representations)</td>
+    <td class="tg-c3ow">Random   search/EA &amp; Sample   solutions in a supermodel (one-shot method)<br>      and rank and select them by the  ranking model</td>
+    <td class="tg-c3ow">arxiv 2021-9</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">DARTsFormer</td>
+    <td class="tg-c3ow">M-level: •  Standard Conv w × 1: for w in 3, 5, 7,   11.<br>     • Dynamic Conv w × 1: for w in 3, 7, 11, 15.<br>     • Self Attention; • FFN.<br>     • Cross Attention: Only available to decoder.<br>     • Gated Linear Unit (GLU).<br>     • Zero: Return a zero tensor of the input size.<br>     • Identity: Return the input.</td>
+    <td class="tg-c3ow">Gradient   optimization (Multi-split reversible network for reducing memory)<br>     &amp; Train a   supermodel </td>
+    <td class="tg-c3ow">arxiv 2021-5</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Quantization</td>
+    <td class="tg-c3ow">Mixed Precision   Quantization Transformer</td>
+    <td class="tg-c3ow">H-level:   1-bit, 2-bit, 4-bit and 8-bit</td>
+    <td class="tg-c3ow">Gradient optimization   &amp; Train a supermodel </td>
+    <td class="tg-c3ow"> ICASSP 2021</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Other</td>
+    <td class="tg-c3ow">TextNAS</td>
+    <td class="tg-c3ow">Not Transformer: 1. Convolutional Layers<br>     2.Recurrent Layers 3.Pooling Layers<br>     4.Multi-Head Self-Attention Layers</td>
+    <td class="tg-c3ow">RL   same as ENAS &amp; Sample   solutions in a supermodel <br>     (one-shot method)</td>
+    <td class="tg-c3ow">AAAI 2020</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Computer <br>     Vision</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">AutoFormer</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2021-7 (ICCV)</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">GLiT</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2021-8</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Multi-stage</td>
+    <td class="tg-c3ow">Vit-ResNAS</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2021-9</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">PSViT</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2021-8</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Vanilla NAS for CNN</td>
+    <td class="tg-c3ow">NAT (not search for   Transformer)</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">PAMI 2021 </td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Speech</td>
+    <td class="tg-c3ow">Speech   Recognition</td>
+    <td class="tg-c3ow">Evolved   Speech-Transformer</td>
+    <td class="tg-c3ow">M-level:   cell space (same as Evolved Transformer) </td>
+    <td class="tg-c3ow">EA   &amp; Sample solutions   and  progressive dynamic hurdles (early   stopping)</td>
+    <td class="tg-c3ow">INTERSPEECH 2020</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">Streaming Transformer</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">arxiv 2020-11</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow">Other</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+  <tr>
+    <td class="tg-c3ow"></td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+    <td class="tg-c3ow">　</td>
+  </tr>
+</tbody>
+</table>
