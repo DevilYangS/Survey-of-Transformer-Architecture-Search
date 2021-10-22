@@ -12,6 +12,8 @@ Papers are divided into the following categories based on Domain Specific:
 Each TAS work is introduced from three aspects: Search Space, Search Strategy, and Estimation Strategy, which are key compoments of NAS and also important for TAS.
 
 
+More details of each work has been summarized in our [survey paper](), coming soon.
+
 ## Summary of TAS
 <table>
 <thead>
